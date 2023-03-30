@@ -1,0 +1,8 @@
+{
+  "name": "sample-nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "hieugiabao",
+  "license": "MIT",
+  "private": true
+}
