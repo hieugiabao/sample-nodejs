@@ -22,7 +22,7 @@ pipeline {
         stage('docker-build/push-registry') {
             steps {
                 sh '''#!/usr/bin/env bash
-                docker login -u ${DOCKER_REGISTRY_USERNAME} -p ${DOCKER_REGISTRY_PASSWORD}
+                docker login -u ${DOCKER_REGISTRY_USERNAME} --password-stdin ${DOCKER_REGISTRY_PASSWORD}
                 docker build --tag "${REGISTRY_NAME}/nodejs-demo:${BUILD_NUMBER}" .
                 docker push "${REGISTRY_NAME}/nodejs-demo:${BUILD_NUMBER}"
                 '''
