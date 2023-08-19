@@ -132,3 +132,6 @@ dist
 /*.crt
 /*.pem
 /*.p12
+
+/db/
+/db_data/

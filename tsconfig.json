@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": ["es2020", "esnext"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "target": "es2020",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@config/*": ["config/*"],
+      "@controllers/*": ["controllers/*"],
+      "@common/*": ["common/*"],
+      "@entities/*": ["entities/*"],
+      "@middleware/*": ["common/middleware/*"],
+      "@migrations/*": ["migrations/*"],
+      "@models/*": ["models/*"],
+      "@enums/*": ["enums/*"],
+      "@repositories/*": ["repositories/*"],
+      "@services/*": ["services/*"],
+      "@utils/*": ["common/utils/*"],
+      "@*": ["*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}

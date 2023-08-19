@@ -1,0 +1,7 @@
+/node_modules
+/.webpack
+/.serverless
+/build
+/coverage
+/.gitlab-ci.yml
+/src/migrations/*

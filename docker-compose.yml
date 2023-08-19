@@ -1,0 +1,33 @@
+version: '3.6'
+
+services:
+  # web:
+  #   build: .
+  #   ports:
+  #     - 8080:3000
+  my-mongodb:
+    image: mongo:4.2.3-bionic
+    container_name: my-mongodb
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+  redis:
+    image: 'redis:6.2'
+    ports:
+      - 6379:6379
+    command: >
+      --requirepass Admin123
+  postgres-db:
+    image: postgres:14.1
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=verysecret
+      - POSTGRES_DB=postgres-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+      - ./db_data:/var/lib/postgresql/data

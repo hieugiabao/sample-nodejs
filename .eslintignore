@@ -1,0 +1,6 @@
+node_modules
+/.serverless
+/dist
+/coverage
+/__tests__
+/src/migrations/**
