@@ -24,8 +24,8 @@ pipeline {
         stage('Get GIT_COMMIT') {
             steps {
                 script {
-                    def GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                     def BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    def GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 }
             }
         }
