@@ -48,7 +48,7 @@ pipeline {
         stage('Clone Helm Chart repo') {
             steps {
                 dir('argo-cd') {
-                    git branch: 'main', credentialsId: 'GITHUB_CREDS', url: 'git@github.com:hieugiabao/sampleapp-agrocd.git'
+                    git branch: 'main', credentialsId: 'GITHUB_CREDS', url: 'https://github.com/hieugiabao/sampleapp-agrocd'
                     sh '''#!/usr/bin/env bash
                         git config --global user.email "jenkins-ci@github.com"
                         git config --global user.name "jenkins-ci"
