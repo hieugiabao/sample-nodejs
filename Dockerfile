@@ -21,7 +21,7 @@ RUN rm -rf node_modules && \
   --non-interactive \
   --production=true
 
-FROM node-16:alpine
+FROM node:16-alpine
 
 WORKDIR /app
 
