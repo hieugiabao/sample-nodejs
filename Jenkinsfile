@@ -38,6 +38,8 @@ pipeline {
                 sh '''#!/usr/bin/env bash
                 echo "Shell Process ID: $$"
                 docker login --username $DOCKER_REGISTRY_USERNAME --password $DOCKER_REGISTRY_PASSWORD
+                echo BRANCH
+                echo GIT_COMMIT
                 docker build --tag ${REGISTRY}/nodejs-demo:${BRANCH}-${GIT_COMMIT} .
                 docker push ${REGISTRY}/nodejs-demo:${BRANCH}-${GIT_COMMIT}
                 '''
