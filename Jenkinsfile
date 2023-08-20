@@ -25,6 +25,8 @@ pipeline {
             steps {
                 script {
                     GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                }
+                script {
                     BRANCH = sh(returnStdout: true, script: "git rev-parse --abbrev-ref HEAD").trim()
                 }
             }
