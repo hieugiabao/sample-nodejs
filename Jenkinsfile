@@ -5,6 +5,7 @@ pipeline {
         DOCKER_REGISTRY_USERNAME    = credentials('DOCKER_REGISTRY_USERNAME')
         DOCKER_REGISTRY_PASSWORD    = credentials('DOCKER_REGISTRY_PASSWORD')
         GITHUB_CREDS                = credentials('GITHUB_CREDS')
+        GH_PASSWORD                 = credentials('GH_PASSWORD')
     }
 
     stages {
@@ -68,7 +69,9 @@ pipeline {
                 cd ./argo-cd
                 sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-dev.yaml
                 sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH}-${GIT_COMMIT}/" -i values-dev.yaml
-                git commit -am 'Publish new version' && git push origin main || echo 'no changes'
+                git commit -am 'Publish new version'
+                git remote set-url origin https://hieugiabao:${GH_PASSWORD}@github.com/hieugiabao/sampleapp-agrocd.git
+                git push origin main || echo 'no changes'
                 '''
             }
         }
@@ -84,7 +87,9 @@ pipeline {
                 cd ./argo-cd
                 sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-prod.yaml
                 sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH}-${GIT_COMMIT}/" -i values-prod.yaml
-                git commit -am 'Publish new version' && git push origin main || echo 'no changes'
+                git commit -am 'Publish new version'
+                git remote set-url origin https://hieugiabao:${GH_PASSWORD}@github.com/hieugiabao/sampleapp-agrocd.git
+                git push origin main || echo 'no changes'
                 '''
             }
         }
