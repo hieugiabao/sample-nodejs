@@ -68,7 +68,7 @@ pipeline {
                 cd ./argo-cd
                 sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-dev.yaml
                 sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH}-${GIT_COMMIT}/" -i values-dev.yaml
-                git commit -am 'Publish new version' && git push || echo 'no changes'
+                git commit -am 'Publish new version' && git push origin main || echo 'no changes'
                 '''
             }
         }
@@ -84,7 +84,7 @@ pipeline {
                 cd ./argo-cd
                 sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-prod.yaml
                 sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH}-${GIT_COMMIT}/" -i values-prod.yaml
-                git commit -am 'Publish new version' && git push || echo 'no changes'
+                git commit -am 'Publish new version' && git push origin main || echo 'no changes'
                 '''
             }
         }
