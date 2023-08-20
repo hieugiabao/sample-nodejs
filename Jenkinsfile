@@ -25,6 +25,7 @@ pipeline {
             steps {
                 script {
                     GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                    BRANCH = sh(returnStdout: true, script: "git rev-parse --abbrev-ref HEAD").trim()
                 }
             }
         }
@@ -36,7 +37,7 @@ pipeline {
             steps {
                 sh '''#!/usr/bin/env bash
                 echo "Shell Process ID: $$"
-                docker login --user $DOCKER_REGISTRY_USERNAME --password $DOCKER_REGISTRY_PASSWORD
+                docker login --username $DOCKER_REGISTRY_USERNAME --password $DOCKER_REGISTRY_PASSWORD
                 docker build --tag ${REGISTRY}/nodejs-demo:${BRANCH}-${GIT_COMMIT} .
                 docker push ${REGISTRY}/nodejs-demo:${BRANCH}-${GIT_COMMIT}
                 '''
