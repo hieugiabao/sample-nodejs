@@ -59,17 +59,15 @@ pipeline {
             when {
                 branch 'dev'
             }
-            script {
-                steps {
-                    sh '''#!/usr/bin/env bash
-                    echo "Shell Process ID: $$"
-                    # Replace Repository and tag
-                    cd ./argo-cd/sampleapp
-                    sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-dev.yaml
-                    sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH}-${GIT_COMMIT}/" -i values-dev.yaml
-                    git commit -am 'Publish new version' && git push || echo 'no changes'
-                    '''
-                }
+            steps {
+                sh '''#!/usr/bin/env bash
+                echo "Shell Process ID: $$"
+                # Replace Repository and tag
+                cd ./argo-cd/sampleapp
+                sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-dev.yaml
+                sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH}-${GIT_COMMIT}/" -i values-dev.yaml
+                git commit -am 'Publish new version' && git push || echo 'no changes'
+                '''
             }
         }
 
@@ -77,17 +75,15 @@ pipeline {
             when {
                 branch 'prod'
             }
-            script {
-                steps {
-                    sh '''#!/usr/bin/env bash
-                    echo "Shell Process ID: $$"
-                    # Replace Repository and tag
-                    cd ./argo-cd/sampleapp
-                    sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-prod.yaml
-                    sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH}-${GIT_COMMIT}/" -i values-prod.yaml
-                    git commit -am 'Publish new version' && git push || echo 'no changes'
-                    '''
-                }
+            steps {
+                sh '''#!/usr/bin/env bash
+                echo "Shell Process ID: $$"
+                # Replace Repository and tag
+                cd ./argo-cd/sampleapp
+                sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-prod.yaml
+                sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH}-${GIT_COMMIT}/" -i values-prod.yaml
+                git commit -am 'Publish new version' && git push || echo 'no changes'
+                '''
             }
         }
     }
