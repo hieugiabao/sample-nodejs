@@ -5,6 +5,7 @@ pipeline {
         DOCKER_REGISTRY_USERNAME    = credentials('DOCKER_REGISTRY_USERNAME')
         DOCKER_REGISTRY_PASSWORD    = credentials('DOCKER_REGISTRY_PASSWORD')
         GITHUB_CREDS                = credentials('GITHUB_CREDS')
+        GH_PASSWORD                 = credentials('GH_PASSWORD')
     }
 
     stages {
@@ -24,21 +25,23 @@ pipeline {
         stage('Get GIT_COMMIT') {
             steps {
                 script {
-                    GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                    def GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 }
             }
         }
 
         stage('docker-build') {
             options {
-                timeout(time: 10, unit: 'MINUTES')
+                timeout(time: 30, unit: 'MINUTES')
             }
             steps {
                 sh '''#!/usr/bin/env bash
                 echo "Shell Process ID: $$"
-                docker login --user $DOCKER_REGISTRY_USERNAME --password $DOCKER_REGISTRY_PASSWORD
-                docker build --tag ${REGISTRY}/nodejs-demo:${BRANCH}-${GIT_COMMIT} .
-                docker push ${REGISTRY}/nodejs-demo:${BRANCH}-${GIT_COMMIT}
+                docker login --username $DOCKER_REGISTRY_USERNAME --password $DOCKER_REGISTRY_PASSWORD
+                echo Branch: ${BRANCH_NAME}
+                echo Git commit: ${GIT_COMMIT}
+                docker build --tag ${REGISTRY}/nodejs-demo:${BRANCH_NAME}-${GIT_COMMIT} .
+                docker push ${REGISTRY}/nodejs-demo:${BRANCH_NAME}-${GIT_COMMIT}
                 '''
             }
         }
@@ -46,7 +49,7 @@ pipeline {
         stage('Clone Helm Chart repo') {
             steps {
                 dir('argo-cd') {
-                    git branch: 'main', credentialsId: 'GITHUB_CREDS', url: 'git@github.com:hieugiabao/sampleapp-agrocd.git'
+                    git branch: 'main', credentialsId: 'GITHUB_CREDS', url: 'https://github.com/hieugiabao/sampleapp-agrocd'
                     sh '''#!/usr/bin/env bash
                         git config --global user.email "jenkins-ci@github.com"
                         git config --global user.name "jenkins-ci"
@@ -59,17 +62,17 @@ pipeline {
             when {
                 branch 'dev'
             }
-            script {
-                steps {
-                    sh '''#!/usr/bin/env bash
-                    echo "Shell Process ID: $$"
-                    # Replace Repository and tag
-                    cd ./argo-cd/sampleapp
-                    sed -r "s/^(\s*repository\s*:\s*).*/\1${REGISTRY}\/nodejs-demo/" -i values-dev.yaml
-                    sed -r "s/^(\s*tag\s*:\s*).*/\1${BRANCH}-${GIT_COMMIT}/" -i values-dev.yaml
-                    git commit -am 'Publish new version' && git push || echo 'no changes'
-                    '''
-                }
+            steps {
+                sh '''#!/usr/bin/env bash
+                echo "Shell Process ID: $$"
+                # Replace Repository and tag
+                cd ./argo-cd
+                sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-dev.yaml
+                sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH_NAME}-${GIT_COMMIT}/" -i values-dev.yaml
+                git commit -am 'Publish new version'
+                git remote set-url origin https://hieugiabao:${GH_PASSWORD}@github.com/hieugiabao/sampleapp-agrocd.git
+                git push origin main || echo 'no changes'
+                '''
             }
         }
 
@@ -77,17 +80,17 @@ pipeline {
             when {
                 branch 'prod'
             }
-            script {
-                steps {
-                    sh '''#!/usr/bin/env bash
-                    echo "Shell Process ID: $$"
-                    # Replace Repository and tag
-                    cd ./argo-cd/sampleapp
-                    sed -r "s/^(\s*repository\s*:\s*).*/\1${REGISTRY}\/nodejs-demo/" -i values-prod.yaml
-                    sed -r "s/^(\s*tag\s*:\s*).*/\1${BRANCH}-${GIT_COMMIT}/" -i values-prod.yaml
-                    git commit -am 'Publish new version' && git push || echo 'no changes'
-                    '''
-                }
+            steps {
+                sh '''#!/usr/bin/env bash
+                echo "Shell Process ID: $$"
+                # Replace Repository and tag
+                cd ./argo-cd
+                sed -r "s/^(\\s*repository\\s*:\\s*).*/\\1${REGISTRY}\\/nodejs-demo/" -i values-prod.yaml
+                sed -r "s/^(\\s*tag\\s*:\\s*).*/\\1${BRANCH_NAME}-${GIT_COMMIT}/" -i values-prod.yaml
+                git commit -am 'Publish new version'
+                git remote set-url origin https://hieugiabao:${GH_PASSWORD}@github.com/hieugiabao/sampleapp-agrocd.git
+                git push origin main || echo 'no changes'
+                '''
             }
         }
     }
