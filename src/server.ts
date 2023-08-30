@@ -3,8 +3,11 @@ import { Database } from '@config/db';
 import app from './app';
 import { config } from '@config/app';
 import RedisClient from '@config/redis';
+import { Container } from 'typedi';
+import { useContainer } from 'routing-controllers';
 
 const startServer = async () => {
+  useContainer(Container);
   await Database.getMongoConnection();
   await Database.getPostgresConnection();
 

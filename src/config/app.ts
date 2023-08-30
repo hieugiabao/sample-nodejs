@@ -28,6 +28,7 @@ export const config = {
 
   jwt_secret: process.env.JWT_SECRET,
   jwt_expires_in: process.env.ACCESS_TOKEN_TIMEOUT,
+  jwt_salt: Number(process.env.JWT_SALT) || 12,
   refresh_expires_in: process.env.REFRESH_TOKEN_TIMEOUT,
 
   email: {

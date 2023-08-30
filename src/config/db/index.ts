@@ -3,6 +3,7 @@ import * as Mongoose from 'mongoose';
 import { logger } from '@common/logger';
 import { DataSource } from 'typeorm';
 import { connectionOptions } from './postgres';
+import { Container } from 'typedi';
 
 const mongoConnectionString = config.mongo.url;
 
@@ -25,6 +26,11 @@ export class Database {
     if (!this.postgresConnect?.isInitialized) {
       logger.info('Start connect postgres database');
       this.postgresConnect = await Database.getPostgresConnectRetry();
+      Container.set({
+        id: DataSource,
+        type: DataSource,
+        value: this.postgresConnect,
+      });
       logger.info('Connected to postgres database');
     }
 
