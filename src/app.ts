@@ -36,7 +36,12 @@ useExpressServer(app, {
   defaultErrorHandler: false,
   authorizationChecker: async (action, roles: string[]) => {
     const bearer = action.request.headers['authorization'];
-    if (!bearer) return false;
+    if (!bearer)
+      throw new ApiError(
+        StatusCodes.UNAUTHORIZED,
+        ResponseCodeEnum.C0004,
+        'Token not found',
+      );
 
     if (bearer.split(' ')[0] !== 'Bearer')
       throw new ApiError(
@@ -61,7 +66,12 @@ useExpressServer(app, {
   },
   currentUserChecker: async (action) => {
     const bearer = action.request.headers['authorization'];
-    if (!bearer) return false;
+    if (!bearer)
+      throw new ApiError(
+        StatusCodes.UNAUTHORIZED,
+        ResponseCodeEnum.C0004,
+        'Token not found',
+      );
 
     if (bearer.split(' ')[0] !== 'Bearer')
       throw new ApiError(

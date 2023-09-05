@@ -35,6 +35,11 @@ export enum ResponseCodeEnum {
    * Token schema wrong
    */
   C0007 = 'C0007',
+
+  /**
+   * No user found
+   */
+  C0008 = 'C0008',
 }
 
 const RESPONSE_CODE_MESSAGE_MAP: { [key in ResponseCodeEnum]: string } = {
@@ -45,6 +50,7 @@ const RESPONSE_CODE_MESSAGE_MAP: { [key in ResponseCodeEnum]: string } = {
   [ResponseCodeEnum.C0005]: 'Request parameters error',
   [ResponseCodeEnum.C0006]: 'Something went wrong',
   [ResponseCodeEnum.C0007]: 'Token schema wrong',
+  [ResponseCodeEnum.C0008]: 'No user found',
 };
 
 export const getMessage = (responseCode: ResponseCodeEnum): string => {

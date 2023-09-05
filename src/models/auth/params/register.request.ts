@@ -1,3 +1,5 @@
+import { IsNotExist } from '@common/decorators/validators/is-not-exist.decorator';
+import { UserEntity } from '@entities/postgres-entities/user.entity';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { ApiModel, ApiModelProperty } from 'swagger-express-ts';
 
@@ -11,6 +13,7 @@ export class RegisterRequest {
     required: true,
   })
   @IsNotEmpty()
+  @IsNotExist(UserEntity)
   username: string;
 
   @ApiModelProperty({
@@ -25,6 +28,7 @@ export class RegisterRequest {
     required: true,
   })
   @IsEmail()
+  @IsNotExist(UserEntity)
   email: string;
 
   @ApiModelProperty()
