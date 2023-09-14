@@ -9,6 +9,7 @@ import { RegisterRequest } from '@models/auth/params/register.request';
 import { ResetPasswordRequest } from '@models/auth/params/reset-password.request';
 import { TokenResultDto } from '@models/auth/token-result.response';
 import { BaseResponse } from '@models/base.response';
+import { ApiEnum } from '@models/enums/api-category.enum';
 import { SecurityService } from '@services/auth/security.service';
 import {
   Authorized,
@@ -33,9 +34,9 @@ import { Service } from 'typedi';
 export class SecurityController {
   constructor(private securityService: SecurityService) {}
 
-  @Post('/login')
+  @Post(ApiEnum.LOGIN)
   @ApiOperationPost({
-    path: '/login',
+    path: ApiEnum.LOGIN,
     description: 'Login with username and password',
     parameters: {
       body: {
@@ -64,9 +65,9 @@ export class SecurityController {
     return await this.securityService.login(dto);
   }
 
-  @Post('/register')
+  @Post(ApiEnum.REGISTER)
   @ApiOperationPost({
-    path: '/register',
+    path: ApiEnum.REGISTER,
     description: 'Register new user',
     parameters: {
       body: {
@@ -96,9 +97,9 @@ export class SecurityController {
     return new ResponseBuilder('Register success').build();
   }
 
-  @Post('/refresh-token')
+  @Post(ApiEnum.REFRESH_TOKEN)
   @ApiOperationPost({
-    path: '/refresh-token',
+    path: ApiEnum.REFRESH_TOKEN,
     description: 'Refresh token',
     parameters: {
       body: {
@@ -136,9 +137,9 @@ export class SecurityController {
   }
 
   @Authorized()
-  @Post('/logout')
+  @Post(ApiEnum.LOGOUT)
   @ApiOperationPost({
-    path: '/logout',
+    path: ApiEnum.LOGOUT,
     description: 'Logout',
     security: {
       BearerAuth: [],
@@ -172,9 +173,9 @@ export class SecurityController {
   }
 
   @Authorized()
-  @Post('/change-password')
+  @Post(ApiEnum.CHANGE_PASSWORD)
   @ApiOperationPost({
-    path: '/change-password',
+    path: ApiEnum.CHANGE_PASSWORD,
     description: 'Change password',
     security: {
       BearerAuth: [],
@@ -219,9 +220,9 @@ export class SecurityController {
     return new ResponseBuilder('Change password success').build();
   }
 
-  @Post('/forgot-password')
+  @Post(ApiEnum.FORGOT_PASSWORD)
   @ApiOperationPost({
-    path: '/forgot-password',
+    path: ApiEnum.FORGOT_PASSWORD,
     description: 'Forgot password',
     parameters: {
       body: {
@@ -255,9 +256,9 @@ export class SecurityController {
     ).build();
   }
 
-  @Post('/reset-password')
+  @Post(ApiEnum.RESET_PASSWORD)
   @ApiOperationPost({
-    path: '/reset-password',
+    path: ApiEnum.RESET_PASSWORD,
     description: 'Reset password',
     parameters: {
       body: {

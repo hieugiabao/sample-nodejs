@@ -1,5 +1,6 @@
 import { ApiError } from '@models/api-error';
 import { AuthUserDto } from '@models/auth/auth-user.dto';
+import { ApiEnum } from '@models/enums/api-category.enum';
 import { ResponseCodeEnum } from '@models/enums/response-code.enum';
 import { UpdateUserDto } from '@models/user/update-user.dto';
 import { UserService } from '@services/user/user.service';
@@ -27,9 +28,9 @@ import { Service } from 'typedi';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('/profile')
+  @Get(ApiEnum.PROFILE)
   @ApiOperationGet({
-    path: '/profile',
+    path: ApiEnum.PROFILE,
     description: 'Get user profile',
     summary: 'Get user profile',
     responses: {
@@ -50,9 +51,9 @@ export class UserController {
     return await this.userService.getProfile(user);
   }
 
-  @Put('/change-profile')
+  @Put(ApiEnum.UPDATE_PROFILE)
   @ApiOperationPut({
-    path: '/change-profile',
+    path: ApiEnum.UPDATE_PROFILE,
     description: 'Update user profile',
     summary: 'Update user profile',
     parameters: {

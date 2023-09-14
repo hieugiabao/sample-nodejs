@@ -7,18 +7,19 @@ import {
   SwaggerDefinitionConstant,
   ApiOperationGet,
 } from 'swagger-express-ts';
+import { ApiEnum } from '@models/enums/api-category.enum';
 
 @Controller('')
 @Service()
 @ApiPath({
   name: 'Health',
-  path: '/',
+  path: '',
 })
 export class HealthController {
-  @Get('/health')
+  @Get(ApiEnum.HEALTH)
   @ContentType('application/json')
   @ApiOperationGet({
-    path: 'health',
+    path: ApiEnum.HEALTH,
     description: 'Check health of server',
     responses: {
       200: {
@@ -39,6 +40,7 @@ export class HealthController {
 
   @ApiOperationGet({
     description: 'Get home message',
+    path: ApiEnum.HOME,
     responses: {
       200: {
         description: 'Success',
@@ -46,7 +48,7 @@ export class HealthController {
       },
     },
   })
-  @Get('/')
+  @Get(ApiEnum.HOME)
   @ContentType('text/html')
   home(): string {
     return '<h1>Hello World!</h1>';
