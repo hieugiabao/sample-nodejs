@@ -40,6 +40,8 @@ pipeline {
                 docker login --username $DOCKER_REGISTRY_USERNAME --password $DOCKER_REGISTRY_PASSWORD
                 echo Branch: ${BRANCH_NAME}
                 echo Git commit: ${GIT_COMMIT}
+                # replace / with - in branch name
+                BRANCH_NAME=${BRANCH_NAME//\//-}
                 docker build --tag ${REGISTRY}/nodejs-demo:${BRANCH_NAME}-${GIT_COMMIT} .
                 docker push ${REGISTRY}/nodejs-demo:${BRANCH_NAME}-${GIT_COMMIT}
                 '''
