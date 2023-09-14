@@ -14,6 +14,9 @@ export class ValidationRequestError extends ApiError {
   }
 
   toResponse(): BaseResponse<void> {
-    return new ResponseBuilder<void>().error().withErrors(this._errors).build();
+    const builder = new ResponseBuilder<void>()
+      .error()
+      .withCode(this._errorCode);
+    return builder.withErrors(this._errors).build();
   }
 }

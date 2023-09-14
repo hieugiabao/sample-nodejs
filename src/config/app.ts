@@ -28,10 +28,12 @@ export const config = {
 
   jwt_secret: process.env.JWT_SECRET,
   jwt_expires_in: process.env.ACCESS_TOKEN_TIMEOUT,
+  jwt_salt: Number(process.env.JWT_SALT) || 12,
   refresh_expires_in: process.env.REFRESH_TOKEN_TIMEOUT,
 
   email: {
     sender: process.env.SENDER,
+    sender_mail: process.env.SENDER_MAIL,
     api_key: process.env.EMAIL_API_KEY,
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,

@@ -5,9 +5,9 @@ import { ResponseCodeEnum } from './enums/response-code.enum';
 export class ApiError extends Error {
   public _status: number;
 
-  private readonly _message: string;
+  protected readonly _message: string;
 
-  private readonly _errorCode: ResponseCodeEnum;
+  protected readonly _errorCode: ResponseCodeEnum;
 
   constructor(status: number, errorCode: ResponseCodeEnum, message?: string) {
     super(message);
