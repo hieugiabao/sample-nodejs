@@ -1,3 +1,4 @@
+import { IsMatchWith } from '@common/decorators/validators/is-match-with.decorator';
 import { IsNotExist } from '@common/decorators/validators/is-not-exist.decorator';
 import { UserEntity } from '@entities/postgres-entities/user.entity';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
@@ -22,6 +23,14 @@ export class RegisterRequest {
   })
   @IsNotEmpty()
   password: string;
+
+  @ApiModelProperty({
+    description: 'Confirm password',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsMatchWith('password')
+  confirmPassword: string;
 
   @ApiModelProperty({
     description: 'Username',

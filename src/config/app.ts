@@ -33,6 +33,7 @@ export const config = {
 
   email: {
     sender: process.env.SENDER,
+    sender_mail: process.env.SENDER_MAIL,
     api_key: process.env.EMAIL_API_KEY,
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
