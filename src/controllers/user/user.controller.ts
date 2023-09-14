@@ -1,12 +1,16 @@
+import { ApiError } from '@models/api-error';
 import { AuthUserDto } from '@models/auth/auth-user.dto';
+import { ResponseCodeEnum } from '@models/enums/response-code.enum';
 import { UpdateUserDto } from '@models/user/update-user.dto';
 import { UserService } from '@services/user/user.service';
+import { StatusCodes } from 'http-status-codes';
 import {
   Authorized,
   Body,
   CurrentUser,
   Get,
   JsonController,
+  OnNull,
   Put,
 } from 'routing-controllers';
 import { ApiOperationGet, ApiOperationPut, ApiPath } from 'swagger-express-ts';
@@ -34,6 +38,13 @@ export class UserController {
         model: 'UserInformationDto',
       },
     },
+  })
+  @OnNull(() => {
+    throw new ApiError(
+      StatusCodes.NOT_FOUND,
+      ResponseCodeEnum.C0001,
+      'User not found',
+    );
   })
   async getProfile(@CurrentUser({ required: true }) user: AuthUserDto) {
     return await this.userService.getProfile(user);
