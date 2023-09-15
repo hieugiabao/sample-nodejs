@@ -40,6 +40,16 @@ export enum ResponseCodeEnum {
    * No user found
    */
   C0008 = 'C0008',
+
+  /**
+   * Invalid image file mimetype
+   */
+  C0009 = 'C0009',
+
+  /**
+   * Upload file size is too big
+   */
+  C0010 = 'C0010',
 }
 
 const RESPONSE_CODE_MESSAGE_MAP: { [key in ResponseCodeEnum]: string } = {
@@ -51,6 +61,8 @@ const RESPONSE_CODE_MESSAGE_MAP: { [key in ResponseCodeEnum]: string } = {
   [ResponseCodeEnum.C0006]: 'Something went wrong',
   [ResponseCodeEnum.C0007]: 'Token schema wrong',
   [ResponseCodeEnum.C0008]: 'No user found',
+  [ResponseCodeEnum.C0009]: 'Invalid image file mimetype',
+  [ResponseCodeEnum.C0010]: 'Upload file size is too big',
 };
 
 export const getMessage = (responseCode: ResponseCodeEnum): string => {
