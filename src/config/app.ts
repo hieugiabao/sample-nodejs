@@ -40,6 +40,16 @@ export const config = {
     username: process.env.EMAIL_USERNAME,
     password: process.env.EMAIL_PASSWORD,
   },
+
+  minio: {
+    endPoint: process.env.MINIO_ENDPOINT,
+    port: Number(process.env.MINIO_PORT),
+    useSSL: process.env.MINIO_USE_SSL === 'true',
+    accessKey: process.env.MINIO_ACCESS_KEY,
+    secretKey: process.env.MINIO_SECRET_KEY,
+    bucketName: process.env.MINIO_BUCKET_NAME,
+    schema: process.env.MINIO_SCHEMA || 'http',
+  },
 };
 
 export type Config = typeof config;
