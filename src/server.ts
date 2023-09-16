@@ -8,8 +8,7 @@ import { useContainer } from 'routing-controllers';
 
 const startServer = async () => {
   useContainer(Container);
-  await Database.getMongoConnection();
-  await Database.getPostgresConnection();
+  await Database.initDataSource();
 
   app
     .listen(config.port, () => {

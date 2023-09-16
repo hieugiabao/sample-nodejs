@@ -41,14 +41,14 @@ export class Database {
     if (!this.mongooseConnection) return;
 
     await Mongoose.disconnect();
-    logger.info('Close DB connection:)');
+    logger.info('Closed Mongo DB connection:)');
   }
 
   static async disConnectPostgres() {
     if (!this.postgresConnect?.isInitialized) return;
 
     await this.postgresConnect.destroy();
-    logger.info('Close postgres DB connection:)');
+    logger.info('Closed postgres DB connection:)');
   }
 
   private static async getMongoDBConnectRetry({
@@ -59,8 +59,13 @@ export class Database {
     maxRetries?: number;
   } = {}): Promise<Mongoose.Connection> {
     try {
-      await Mongoose.connect(mongoConnectionString);
-      this.mongooseConnection = Mongoose.connection;
+      const connect = await Mongoose.connect(mongoConnectionString);
+      this.mongooseConnection = connect.connection;
+      Container.set({
+        id: Mongoose.Connection,
+        type: Mongoose.Connection,
+        value: connect.connection,
+      });
       return this.mongooseConnection;
     } catch (error) {
       if (retries < maxRetries) {
@@ -97,5 +102,15 @@ export class Database {
       );
       throw error;
     }
+  }
+
+  public static async initDataSource() {
+    await Database.getPostgresConnection();
+    await Database.getMongoConnection();
+  }
+
+  public static async close() {
+    await Database.disConnectPostgres();
+    await Database.disConnectMongo();
   }
 }
