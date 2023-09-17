@@ -4,3 +4,7 @@ README.md
 ci-template
 dist
 .env
+db
+db_data
+docker-compose.yml
+minio_data

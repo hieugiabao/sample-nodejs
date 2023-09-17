@@ -2,24 +2,23 @@ FROM node:16-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json pnpm-lock.yaml ./
 
-RUN yarn install \
+RUN npm install -g pnpm \
+  && pnpm install \
   --prefer-offline \
-  --frozen-lockfile \
-  --non-interactive \
-  --production=false
+  --frozen-lockfile
 
 COPY . .
 
-RUN yarn build
+RUN pnpm build
+
 
 RUN rm -rf node_modules && \
-  NODE_ENV=production yarn install \
+  NODE_ENV=production pnpm install \
   --prefer-offline \
-  --pure-lockfile \
-  --non-interactive \
-  --production=true
+  --fix-lockfile \
+  --prod
 
 FROM node:16-alpine
 
