@@ -17,7 +17,7 @@ RUN pnpm build
 RUN rm -rf node_modules && \
   NODE_ENV=production pnpm install \
   --prefer-offline \
-  --pure-lockfile \
+  --fix-lockfile \
   --prod
 
 FROM node:16-alpine
