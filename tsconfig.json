@@ -27,6 +27,7 @@
       "@repositories/*": ["repositories/*"],
       "@services/*": ["services/*"],
       "@utils/*": ["common/utils/*"],
+      "@seeds/*": ["seeds/*"],
       "@*": ["*"]
     }
   },
