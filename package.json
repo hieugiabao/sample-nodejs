@@ -17,8 +17,8 @@
     "migrate:revert": "tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/migration.js down",
     "migrate:drop": "tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/migration.js drop",
     "migrate:show": "tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/migration.js show",
-    "test:coverage": "dotenv -c test --  yarn migrate:run && jest --coverage --runInBand --detectOpenHandles --forceExit",
-    "test": "dotenv -c test -- yarn migrate:run && jest --detectOpenHandles --runInBand --forceExit"
+    "test:coverage": "dotenv -c test -- yarn migrate:run && dotenv -c test -- jest --coverage --runInBand --detectOpenHandles --forceExit",
+    "test": "dotenv -c test -- yarn migrate:run && dotenv -c test -- jest --detectOpenHandles --runInBand --forceExit"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

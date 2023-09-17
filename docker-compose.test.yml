@@ -1,22 +1,41 @@
 version: '3.6'
 
 services:
-  my-mongodb:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    tty: true
+    depends_on:
+      - mongodb
+      - redis
+      - postgres
+      - minio
+    links:
+      - mongodb
+      - redis
+      - postgres
+      - minio
+    command: >
+      /bin/sh -c "sleep 5; yarn test; exit 0;"
+  mongodb:
     image: mongo:4.2.3-bionic
-    container_name: my-mongodb
+    container_name: mongodb
     ports:
       - 27017:27017
     environment:
       - MONGO_INITDB_DATABASE=test
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - "/data/db"
   redis:
     image: 'redis:6.2'
     ports:
       - 6379:6379
     command: >
       --requirepass Admin123
-  postgres-db:
+  postgres:
     image: postgres:14.1
     environment:
       - POSTGRES_USER=postgres
@@ -24,6 +43,8 @@ services:
       - POSTGRES_DB=postgres-db
     ports:
       - '5432:5432'
+    volumes:
+      - "/var/lib/postgresql/data"
   minio:
     image: minio/minio:latest
     ports:
@@ -33,9 +54,11 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     command: server /data --console-address ":9090"
+    volumes:
+      - "/data"
   minio-bucket:
     image: minio/mc
     depends_on:
       - minio
     entrypoint: >
-      /bin/sh -c " /usr/bin/mc config host add myminio http://minio:9000 minio minio123; /usr/bin/mc mb myminio/file-storage; /usr/bin/mc policy set public myminio/file-storage; exit 0; "
+      /bin/sh -c " /usr/bin/mc config host add myminio http://minio:9000 minio minio123; /usr/bin/mc mb myminio/file-storage; /usr/bin/mc policy set public myminio/file-storage; tail -f /dev/null;"

@@ -22,6 +22,18 @@ pipeline {
         //     }
         // }
 
+        stage('test') {
+            steps {
+                sh '''#!/usr/bin/env bash
+                echo "Shell Process ID: $$"
+                # check docker compose installed and install if not
+                docker-compose --version || (curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose && docker-compose --version)
+                docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit --renew-anon-volumes
+                docker-compose down --remove-orphans --rmi local --volumes
+                '''
+            }
+        }
+
         stage('Get GIT_COMMIT') {
             steps {
                 script {
