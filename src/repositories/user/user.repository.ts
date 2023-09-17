@@ -41,7 +41,6 @@ export class UserRepository {
         take: 1,
       })
       .getOne();
-    console.dir(userEntity);
     return plainToInstance(UserInformationDto, userEntity, {
       excludeExtraneousValues: true,
     });

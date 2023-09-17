@@ -18,7 +18,7 @@
     "migrate:drop": "tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/migration.js drop",
     "migrate:show": "tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/migration.js show",
     "test:coverage": "dotenv -c test -- yarn migrate:run && dotenv -c test -- jest --coverage --runInBand --detectOpenHandles --forceExit",
-    "test": "dotenv -c test -- yarn migrate:run && dotenv -c test -- jest --detectOpenHandles --runInBand --forceExit",
+    "test": "dotenv -c test -- yarn migrate:drop && dotenv -c test -- yarn migrate:run && dotenv -c test -- jest --detectOpenHandles --runInBand --forceExit",
     "db:seed": "tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/seed.js"
   },
   "dependencies": {

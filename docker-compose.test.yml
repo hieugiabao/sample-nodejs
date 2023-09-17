@@ -28,7 +28,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
     volumes:
-      - "/data/db"
+      - mongodb:/data/db
   redis:
     image: 'redis:6.2'
     ports:
@@ -44,7 +44,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - "/var/lib/postgresql/data"
+      - postgres:/var/lib/postgresql/data
   minio:
     image: minio/minio:latest
     ports:
@@ -55,10 +55,16 @@ services:
       MINIO_ROOT_PASSWORD: minio123
     command: server /data --console-address ":9090"
     volumes:
-      - "/data"
+      - minio:/data
   minio-bucket:
     image: minio/mc
     depends_on:
       - minio
     entrypoint: >
       /bin/sh -c " /usr/bin/mc config host add myminio http://minio:9000 minio minio123; /usr/bin/mc mb myminio/file-storage; /usr/bin/mc policy set public myminio/file-storage; tail -f /dev/null;"
+
+volumes:
+  mongodb:
+  redis:
+  postgres:
+  minio:

@@ -174,7 +174,7 @@ export class SecurityService {
       password: await this.hash(newPassword),
     });
 
-    await this.verifyCodeRepository.deleteVerifyCode(email, code);
+    await this.verifyCodeRepository.deleteVerifyCode(code, email);
 
     // await this.mailService.sendMail({
     //   to: {

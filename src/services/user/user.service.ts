@@ -19,22 +19,23 @@ export class UserService {
     user: AuthUserDto,
     dataBody: UpdateUserDto,
   ): Promise<UserInformationDto> {
+    let res: UserInformationDto;
     try {
-      const res = await this.userRepository.update(user, dataBody);
-      if (res === null) {
-        throw new ApiError(
-          StatusCodes.NOT_FOUND,
-          ResponseCodeEnum.C0001,
-          'User not found',
-        );
-      }
-      return res;
+      res = await this.userRepository.update(user, dataBody);
     } catch (e) {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         ResponseCodeEnum.C0006,
       );
     }
+    if (res === null) {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        ResponseCodeEnum.C0001,
+        'User not found',
+      );
+    }
+    return res;
   }
 
   async deleteAccount(user: AuthUserDto): Promise<boolean> {
